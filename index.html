@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="no">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sovetid – Barnehage</title>
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#0ea5e9">
+    <link rel="icon" href="icons/icon-192.png" sizes="192x192">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="stylesheet" href="styles/main.css" />
+</head>
+
+<body>
+    <header class="appbar">
+        <h1>🍼 Sovetid</h1>
+        <div class="actions">
+            <button id="installBtn" hidden>Installer</button>
+            <button id="enableSoundBtn">Aktiver lyd</button>
+            <button id="enableNotifBtn">Tillat varsler</button>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="card">
+            <h2>Legg til / rediger barn</h2>
+            <form id="childForm" autocomplete="off">
+                <input type="hidden" id="childId" />
+                <label>
+                    Navn
+                    <input id="name" required placeholder="F.eks. Nora" />
+                </label>
+                <label>
+                    Maks sovetid (min)
+                    <input id="maxMinutes" required type="number" min="1" step="1" placeholder="F.eks. 60" />
+                </label>
+                <div class="row">
+                    <button type="submit" class="primary">Lagre</button>
+                    <button type="button" id="cancelEditBtn" class="ghost" hidden>Avbryt</button>
+                </div>
+            </form>
+            <p class="hint">Tips: “Maks sovetid” er slik foreldrene ønsker. Du kan alltid avslutte tidligere.</p>
+        </section>
+
+        <section class="card">
+            <h2>Barne-liste</h2>
+            <div id="list"></div>
+            <template id="childRowTpl">
+                <div class="child">
+                    <div class="meta">
+                        <div class="name"></div>
+                        <div class="prefs"></div>
+                        <div class="status"></div>
+                        <div class="times"></div>
+                    </div>
+                    <div class="buttons">
+                        <button class="startBtn">Sovnet nå</button>
+                        <button class="manualBtn">Manuell</button>
+                        <button class="stopBtn" hidden>Avslutt</button>
+                        <button class="editBtn">Rediger</button>
+                        <button class="deleteBtn">Slett</button>
+                    </div>
+                </div>
+            </template>
+        </section>
+
+        <div id="updateBanner" class="card" style="display:none; border-color:#f59e0b">
+            <strong>Ny versjon tilgjengelig.</strong>
+            <div class="row" style="margin-top:8px">
+                <button id="reloadBtn" class="primary">Oppdater nå</button>
+                <button id="dismissUpdateBtn" class="ghost">Senere</button>
+            </div>
+        </div>
+
+        <section class="card">
+            <details>
+                <summary>Ofte stilte spørsmål</summary>
+                <ul>
+                    <li><strong>Lagring:</strong> Data lagres i <code>localStorage</code> og ligger der til
+                        nettleserdata slettes.</li>
+                    <li><strong>Lyd:</strong> Mobil-nettlesere krever et trykk først. Bruk “Aktiver lyd”.</li>
+                    <li><strong>Varsler:</strong> Trykk “Tillat varsler” for systemvarsel når det er tid for oppvåkning.
+                    </li>
+                </ul>
+            </details>
+        </section>
+    </main>
+
+    <dialog id="manualDialog">
+        <button id="manualCloseX" aria-label="Lukk" class="dialog-close">✕</button>
+        <form method="dialog" id="manualForm">
+            <h3>Manuell start</h3>
+            <input type="hidden" id="manualChildId" />
+            <label>
+                Starttid
+                <input id="manualStartTime" type="time" required />
+            </label>
+            <label>
+                Minutter denne gangen (valgfritt)
+                <input id="manualOverride" type="number" min="1" step="1" placeholder="hopper over = standard" />
+            </label>
+            <div class="row">
+                <button id="manualSave" class="primary">Start</button>
+                <button id="manualCancel" class="ghost" value="cancel">Avbryt</button>
+            </div>
+        </form>
+    </dialog>
+
+    <footer class="footer">
+        <small>© Barnehagen – PWA demo</small>
+    </footer>
+
+    <audio id="alarmAudio" src="sounds/soft_alarm.mp3" preload="auto"></audio>
+    <script src="app.js"></script>
+</body>
+
+</html>
