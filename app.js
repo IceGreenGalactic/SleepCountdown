@@ -1,5 +1,4 @@
 const STORAGE_KEY = "children.v1";
-console.log('app.js v4 loaded');
 
 const el = {
   list: document.getElementById("list"),
@@ -27,19 +26,25 @@ const el = {
 let state = {
   children: loadChildren(),
   soundEnabled: false,
-  notifPermission: (typeof Notification !== "undefined") && Notification.permission === "granted",
+  notifPermission:
+    typeof Notification !== "undefined" &&
+    Notification.permission === "granted",
 };
 
 function loadChildren() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     return raw ? JSON.parse(raw) : [];
-  } catch { return []; }
+  } catch {
+    return [];
+  }
 }
 function saveChildren() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state.children));
 }
-function uid() { return Math.random().toString(36).slice(2, 10); }
+function uid() {
+  return Math.random().toString(36).slice(2, 10);
+}
 function fmtTime(ts) {
   const d = new Date(ts);
   return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -53,20 +58,31 @@ function fmtDur(ms) {
   const min = m % 60;
   return hr > 0 ? `${hr}t ${min}m ${sec}s` : `${min}m ${sec}s`;
 }
-function fmtRange(startTs, endTs){ return `${fmtTime(startTs)}–${fmtTime(endTs)}`; }
-function fmtDurShort(ms){
-  let s = Math.max(0, Math.floor(ms/1000));
-  const h = Math.floor(s/3600); s -= h*3600;
-  const m = Math.floor(s/60);
+function fmtRange(startTs, endTs) {
+  return `${fmtTime(startTs)}–${fmtTime(endTs)}`;
+}
+function fmtDurShort(ms) {
+  let s = Math.max(0, Math.floor(ms / 1000));
+  const h = Math.floor(s / 3600);
+  s -= h * 3600;
+  const m = Math.floor(s / 60);
   return h ? `${h}t ${m}m` : `${m}m`;
 }
-function parseTimeToTimestamp(hhmm){
+function parseTimeToTimestamp(hhmm) {
   if (!hhmm) return null;
-  const [hh, mm] = hhmm.split(':').map(Number);
+  const [hh, mm] = hhmm.split(":").map(Number);
   const now = new Date();
-  const d = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hh, mm, 0, 0);
+  const d = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+    hh,
+    mm,
+    0,
+    0
+  );
   const ts = d.getTime();
-  return ts > Date.now() ? ts - 24*60*60*1000 : ts;
+  return ts > Date.now() ? ts - 24 * 60 * 60 * 1000 : ts;
 }
 
 function render() {
@@ -86,7 +102,9 @@ function render() {
     node.dataset.id = child.id;
 
     node.querySelector(".name").textContent = child.name;
-    node.querySelector(".prefs").textContent = `Maks sovetid: ${child.maxMinutes} min`;
+    node.querySelector(
+      ".prefs"
+    ).textContent = `Maks sovetid: ${child.maxMinutes} min`;
 
     const status = node.querySelector(".status");
     const times = node.querySelector(".times");
@@ -106,7 +124,9 @@ function render() {
       const wakeTxt = `Skal vekkes kl. ${fmtTime(child.wakeAtTs)}`;
       times.textContent = `${startTxt} • ${wakeTxt}`;
       if (remaining > 0) {
-        status.innerHTML = `⏳ Tid igjen: <strong>${fmtDur(remaining)}</strong>`;
+        status.innerHTML = `⏳ Tid igjen: <strong>${fmtDur(
+          remaining
+        )}</strong>`;
         if (remaining <= 60_000) node.classList.add("due");
       } else {
         status.innerHTML = `⏰ Tiden er ute!`;
@@ -115,16 +135,21 @@ function render() {
     } else {
       startBtn.hidden = false;
       stopBtn.hidden = true;
-      manualBtn.hidden = false; 
+      manualBtn.hidden = false;
       status.textContent = "Klar til lur.";
       times.textContent = "";
       if (child.logs?.length) {
         const last = child.logs[0];
-        times.textContent = `${fmtRange(last.start, last.end)} – sovet ${fmtDurShort(last.durMs)}`;
+        times.textContent = `${fmtRange(
+          last.start,
+          last.end
+        )} – sovet ${fmtDurShort(last.durMs)}`;
       }
     }
 
-    startBtn.addEventListener("click", () => startNap(child.id, Date.now(), null));
+    startBtn.addEventListener("click", () =>
+      startNap(child.id, Date.now(), null)
+    );
     manualBtn.addEventListener("click", () => openManualDialog(child.id));
     stopBtn.addEventListener("click", () => stopNap(child.id));
     editBtn.addEventListener("click", () => editChild(child.id));
@@ -143,19 +168,22 @@ function addChild(name, maxMinutes) {
     wakeAtTs: null,
     logs: [],
   });
-  saveChildren(); render();
+  saveChildren();
+  render();
 }
 function updateChild(id, name, maxMinutes) {
   const c = state.children.find((x) => x.id === id);
   if (!c) return;
   c.name = name.trim();
   c.maxMinutes = Number(maxMinutes);
-  saveChildren(); render();
+  saveChildren();
+  render();
 }
 function deleteChild(id) {
   if (!confirm("Slette barnet?")) return;
   state.children = state.children.filter((x) => x.id !== id);
-  saveChildren(); render();
+  saveChildren();
+  render();
 }
 function editChild(id) {
   const c = state.children.find((x) => x.id === id);
@@ -176,13 +204,14 @@ function startNap(id, startTs, overrideMinutes) {
   const wakeAt = start + minutes * 60_000;
   c.napStartTs = start;
   c.wakeAtTs = wakeAt;
-  saveChildren(); render();
+  saveChildren();
+  render();
   scheduleWakeCheck(c);
 }
-function stopNap(id){
-  const c = state.children.find(x=>x.id===id);
-  if(!c) return;
-  if (c.napStartTs){
+function stopNap(id) {
+  const c = state.children.find((x) => x.id === id);
+  if (!c) return;
+  if (c.napStartTs) {
     const end = Date.now();
     const durMs = end - c.napStartTs;
     c.logs = c.logs || [];
@@ -190,7 +219,8 @@ function stopNap(id){
   }
   c.napStartTs = null;
   c.wakeAtTs = null;
-  saveChildren(); render();
+  saveChildren();
+  render();
 }
 
 function tick() {
@@ -211,7 +241,10 @@ setInterval(tick, 1000);
 
 function triggerAlarm(child) {
   if (state.soundEnabled) {
-    try { el.alarm.currentTime = 0; el.alarm.play(); } catch {}
+    try {
+      el.alarm.currentTime = 0;
+      el.alarm.play();
+    } catch {}
   }
   if (state.notifPermission && navigator.serviceWorker) {
     navigator.serviceWorker.ready.then((reg) => {
@@ -242,16 +275,22 @@ el.form.addEventListener("submit", (e) => {
   el.cancelEditBtn.hidden = true;
 });
 el.cancelEditBtn.addEventListener("click", () => {
-  el.form.reset(); el.childId.value = ""; el.cancelEditBtn.hidden = true;
+  el.form.reset();
+  el.childId.value = "";
+  el.cancelEditBtn.hidden = true;
 });
 
 el.enableSoundBtn.addEventListener("click", async () => {
   try {
-    await el.alarm.play(); el.alarm.pause(); el.alarm.currentTime = 0;
+    await el.alarm.play();
+    el.alarm.pause();
+    el.alarm.currentTime = 0;
     state.soundEnabled = true;
     el.enableSoundBtn.textContent = "Lyd aktivert ✅";
     el.enableSoundBtn.disabled = true;
-  } catch { alert("Kunne ikke aktivere lyd. Prøv igjen etter et klikk/trykk."); }
+  } catch {
+    alert("Kunne ikke aktivere lyd. Prøv igjen etter et klikk/trykk.");
+  }
 });
 
 el.enableNotifBtn.addEventListener("click", async () => {
@@ -259,7 +298,7 @@ el.enableNotifBtn.addEventListener("click", async () => {
     return alert("Varsler støttes ikke i denne nettleseren.");
   const perm = await Notification.requestPermission();
   state.notifPermission = perm === "granted";
-  if (state.notifPermission){
+  if (state.notifPermission) {
     el.enableNotifBtn.textContent = "Varsler på ✅";
     el.enableNotifBtn.disabled = true;
   }
@@ -280,64 +319,72 @@ el.installBtn.addEventListener("click", async () => {
 });
 
 const updateUI = { waitingSW: null };
-// if ('serviceWorker' in navigator) {
-//   navigator.serviceWorker.register('./sw.js').then(reg=>{
-//     reg.addEventListener('updatefound', ()=>{
-//       const newWorker = reg.installing;
-//       if (!newWorker) return;
-//       newWorker.addEventListener('statechange', ()=>{
-//         if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-//           updateUI.waitingSW = reg.waiting || newWorker;
-//           if (el.updateBanner) el.updateBanner.style.display = 'block';
-//         }
-//       });
-//     });
-//     if (reg.waiting) {
-//       updateUI.waitingSW = reg.waiting;
-//       if (el.updateBanner) el.updateBanner.style.display = 'block';
-//     }
-//   });
-//   el.reloadBtn?.addEventListener('click', ()=>{
-//     if (updateUI.waitingSW) updateUI.waitingSW.postMessage('SKIP_WAITING');
-//   });
-//   el.dismissUpdateBtn?.addEventListener('click', ()=>{
-//     if (el.updateBanner) el.updateBanner.style.display = 'none';
-//   });
-//   navigator.serviceWorker.addEventListener('controllerchange', ()=>{
-//     window.location.reload();
-//   });
-// }
-
-function openManualDialog(childId){
-  el.manualChildId.value = childId;
-  el.manualStartTime.value = '';
-  el.manualOverride.value = '';
-  if (el.manualDialog?.showModal) el.manualDialog.showModal();
-  else alert('Dialog støttes ikke i denne nettleseren.');
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("./sw.js").then((reg) => {
+    reg.addEventListener("updatefound", () => {
+      const newWorker = reg.installing;
+      if (!newWorker) return;
+      newWorker.addEventListener("statechange", () => {
+        if (
+          newWorker.state === "installed" &&
+          navigator.serviceWorker.controller
+        ) {
+          updateUI.waitingSW = reg.waiting || newWorker;
+          if (el.updateBanner) el.updateBanner.style.display = "block";
+        }
+      });
+    });
+    if (reg.waiting) {
+      updateUI.waitingSW = reg.waiting;
+      if (el.updateBanner) el.updateBanner.style.display = "block";
+    }
+  });
+  el.reloadBtn?.addEventListener("click", () => {
+    if (updateUI.waitingSW) updateUI.waitingSW.postMessage("SKIP_WAITING");
+  });
+  el.dismissUpdateBtn?.addEventListener("click", () => {
+    if (el.updateBanner) el.updateBanner.style.display = "none";
+  });
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    window.location.reload();
+  });
 }
-el.manualSave?.addEventListener('click', (e)=>{
+
+function openManualDialog(childId) {
+  el.manualChildId.value = childId;
+  el.manualStartTime.value = "";
+  el.manualOverride.value = "";
+  if (el.manualDialog?.showModal) el.manualDialog.showModal();
+  else alert("Dialog støttes ikke i denne nettleseren.");
+}
+el.manualSave?.addEventListener("click", (e) => {
   e.preventDefault();
   const id = el.manualChildId.value;
   const ts = parseTimeToTimestamp(el.manualStartTime.value);
-  if (!ts){ alert('Ugyldig starttid'); return; }
-  const overrideMin = el.manualOverride.value ? Number(el.manualOverride.value) : null;
+  if (!ts) {
+    alert("Ugyldig starttid");
+    return;
+  }
+  const overrideMin = el.manualOverride.value
+    ? Number(el.manualOverride.value)
+    : null;
   startNap(id, ts, overrideMin);
   el.manualDialog.close();
 });
-const closeX = document.getElementById('manualCloseX');
+const closeX = document.getElementById("manualCloseX");
 
-closeX?.addEventListener('click', (e)=>{
+closeX?.addEventListener("click", (e) => {
   e.preventDefault();
   el.manualDialog.close();
 });
 
-el.manualDialog?.addEventListener('click', (e)=>{
+el.manualDialog?.addEventListener("click", (e) => {
   if (e.target === el.manualDialog) {
     el.manualDialog.close();
   }
 });
 
-el.manualDialog?.addEventListener('cancel', (e)=>{
+el.manualDialog?.addEventListener("cancel", (e) => {
   el.manualDialog.close();
 });
 
