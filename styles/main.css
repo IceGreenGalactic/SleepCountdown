@@ -15,12 +15,19 @@
 html,
 body {
   height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
 }
 body {
   margin: 0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
   background: linear-gradient(180deg, #0a0f25, #0b132b 50%, #0a0f25);
   color: var(--text);
+  height: 100vh;
+}
+main {
+  flex: 1;
 }
 .appbar {
   position: sticky;
@@ -154,19 +161,32 @@ button:disabled {
   margin-top: 10px;
 }
 
-.due {
+.child.due {
   border-color: var(--warn);
-  animation: blink 1s steps(2, start) infinite;
+  background-image: radial-gradient(120% 120% at 50% 0,
+    rgba(245, 158, 11, 0.06), transparent 60%);
+  animation: bgPulse 1.2s ease-in-out infinite;
 }
-.overdue {
+.child.overdue {
   border-color: var(--danger);
-  animation: blink 0.6s steps(2, start) infinite;
+  background-image: radial-gradient(120% 120% at 50% 0,
+    rgba(239, 68, 68, 0.08), transparent 60%);
+  animation: bgPulseFast 0.9s ease-in-out infinite;
 }
-@keyframes blink {
-  to {
-    visibility: hidden;
-  }
+
+@keyframes bgPulse {
+  0%,100% { background-size: 100% 100%; }
+  50%     { background-size: 105% 105%; }
 }
+@keyframes bgPulseFast {
+  0%,100% { background-size: 100% 100%; }
+  50%     { background-size: 110% 110%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .child.due, .child.overdue { animation: none; }
+}
+
 
 .footer {
   opacity: 0.7;
@@ -183,11 +203,22 @@ button:disabled {
     gap: 8px;
   }
 }
-dialog { position: relative; }
-.dialog-close{
-  position:absolute; top:8px; right:8px;
-  background:transparent; border:0; color:#9fb0c9;
-  font-size:20px; line-height:1; padding:6px; cursor:pointer;
-  border-radius:8px;
+dialog {
+  position: relative;
 }
-.dialog-close:hover{ background:rgba(255,255,255,.06); }
+.dialog-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: transparent;
+  border: 0;
+  color: #9fb0c9;
+  font-size: 20px;
+  line-height: 1;
+  padding: 6px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.dialog-close:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
