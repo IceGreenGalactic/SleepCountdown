@@ -287,8 +287,4 @@ dialog::backdrop {
     display: flex;
     gap: 8px;
   }
-  .actions button {
-    color: red;
-    font-size: 11px;
-  }
 }
