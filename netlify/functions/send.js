@@ -7,15 +7,12 @@ webpush.setVapidDetails(
 );
 
 exports.handler = async (event) => {
-  if (event.httpMethod !== "POST") return { statusCode: 405 };
   try {
-    const { subscription, tag } = JSON.parse(event.body || "{}");
-    if (!subscription)
-      return {
-        statusCode: 400,
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ error: "missing subscription" }),
-      };
+    if (event.httpMethod !== "POST") return { statusCode: 405, body: "" };
+
+    const body = JSON.parse(event.body || "{}");
+    const { subscription, tag } = body || {};
+    if (!subscription) return { statusCode: 400, body: JSON.stringify({ error: "missing subscription" }) };
 
     const payload = JSON.stringify({
       title: "Tid for oppvåkning",
@@ -24,17 +21,8 @@ exports.handler = async (event) => {
     });
 
     await webpush.sendNotification(subscription, payload, { TTL: 600 });
-
-    return {
-      statusCode: 200,
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ ok: true }),
-    };
+    return { statusCode: 200, body: JSON.stringify({ ok: true }) };
   } catch (e) {
-    return {
-      statusCode: 500,
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ error: "push failed", details: String(e) }),
-    };
+    return { statusCode: 500, body: JSON.stringify({ error: "push failed", details: String(e) }) };
   }
 };
