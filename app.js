@@ -120,9 +120,12 @@ function render() {
       manualBtn.hidden = true;
       const now = Date.now();
       const remaining = child.wakeAtTs - now;
-      const startTxt = `Sovnet kl. ${fmtTime(child.napStartTs)}`;
-      const wakeTxt = `Skal vekkes kl. ${fmtTime(child.wakeAtTs)}`;
-      times.textContent = `${startTxt} • ${wakeTxt}`;
+times.textContent = ""; 
+const a = document.createTextNode(`Sovnet kl. ${fmtTime(child.napStartTs)} • Skal vekkes kl. `);
+const b = document.createElement("span");
+b.className = "wake-time";
+b.textContent = fmtTime(child.wakeAtTs);
+times.append(a, b);
       if (remaining > 0) {
         status.innerHTML = `⏳ Tid igjen: <strong>${fmtDur(
           remaining
