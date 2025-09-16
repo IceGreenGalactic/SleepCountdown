@@ -6,16 +6,16 @@ webpush.setVapidDetails(
   process.env.VAPID_PRIVATE_KEY
 );
 
-module.exports = async (req, res) => {
+exports.handler = async (event) => {
+  if (event.httpMethod !== "POST") return { statusCode: 405 };
   try {
-    if (req.method !== "POST") return res.status(405).end();
-    const body =
-      typeof req.body === "string"
-        ? JSON.parse(req.body || "{}")
-        : req.body || {};
-    const { subscription, tag } = body || {};
+    const { subscription, tag } = JSON.parse(event.body || "{}");
     if (!subscription)
-      return res.status(400).json({ error: "missing subscription" });
+      return {
+        statusCode: 400,
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ error: "missing subscription" }),
+      };
 
     const payload = JSON.stringify({
       title: "Tid for oppvåkning",
@@ -24,8 +24,17 @@ module.exports = async (req, res) => {
     });
 
     await webpush.sendNotification(subscription, payload, { TTL: 600 });
-    return res.status(200).json({ ok: true });
+
+    return {
+      statusCode: 200,
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ ok: true }),
+    };
   } catch (e) {
-    return res.status(500).json({ error: "push failed", details: String(e) });
+    return {
+      statusCode: 500,
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ error: "push failed", details: String(e) }),
+    };
   }
 };
