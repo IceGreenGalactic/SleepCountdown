@@ -354,8 +354,16 @@ function openManualDialog(childId) {
   el.manualChildId.value = childId;
   el.manualStartTime.value = "";
   el.manualOverride.value = "";
-  if (el.manualDialog?.showModal) el.manualDialog.showModal();
-  else alert("Dialog støttes ikke i denne nettleseren.");
+
+  if (el.manualDialog?.showModal) {
+    el.manualDialog.showModal();
+    // Fokus uten at dokumentet scroller noe sted
+    requestAnimationFrame(() => {
+      el.manualStartTime?.focus({ preventScroll: true });
+    });
+  } else {
+    alert("Dialog støttes ikke i denne nettleseren.");
+  }
 }
 el.manualSave?.addEventListener("click", (e) => {
   e.preventDefault();
