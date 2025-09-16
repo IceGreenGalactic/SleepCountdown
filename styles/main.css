@@ -84,6 +84,11 @@ input {
   color: var(--text);
   margin-top: 6px;
 }
+details ul {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 .row {
   display: flex;
   gap: 8px;
@@ -157,7 +162,11 @@ button:disabled {
   color: var(--muted);
   font-size: 13px;
 }
-.wake-time { font-weight:700; color:var(--warn); font-size:1.1em; }
+.wake-time {
+  font-weight: 700;
+  color: var(--ok);
+  font-size: 1.1em;
+}
 
 .child .manual {
   margin-top: 10px;
@@ -214,15 +223,6 @@ button:disabled {
   padding: 18px;
 }
 
-@media (max-width: 600px) {
-  .child {
-    flex-direction: column;
-  }
-  .actions {
-    display: flex;
-    gap: 8px;
-  }
-}
 dialog {
   position: fixed;
   top: 50%;
@@ -258,4 +258,37 @@ dialog::backdrop {
 }
 .dialog-close:hover {
   background: rgba(255, 255, 255, 0.06);
+}
+
+.update-banner {
+  display: none;
+  border: 1px solid var(--danger);
+  justify-content: center;
+}
+.update-banner.show {
+  display: block;
+}
+.update-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+.update-title {
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 600px) {
+  .child {
+    flex-direction: column;
+  }
+  .actions {
+    display: flex;
+    gap: 8px;
+  }
+  .actions button {
+    color: red;
+    font-size: 11px;
+  }
 }

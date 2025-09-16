@@ -19,6 +19,7 @@
             <button id="installBtn" hidden>Installer</button>
             <button id="enableSoundBtn">Aktiver lyd</button>
             <button id="enableNotifBtn">Tillat varsler</button>
+
         </div>
     </header>
 
@@ -65,22 +66,27 @@
             </template>
         </section>
 
-        <div id="updateBanner" class="card" style="display:none; border-color:#f59e0b">
-            <strong>Ny versjon tilgjengelig.</strong>
-            <div class="row" style="margin-top:8px">
-                <button id="reloadBtn" class="primary">Oppdater nå</button>
-                <button id="dismissUpdateBtn" class="ghost">Senere</button>
+        <div id="updateBanner" class="card update-banner" role="alert" aria-live="polite">
+            <div class="update-row">
+                <strong class="update-title">Ny versjon tilgjengelig</strong>
+                <div class="update-actions">
+                    <button id="reloadBtn" class="primary">Oppdater nå</button>
+                </div>
             </div>
         </div>
 
+
+
         <section class="card">
-            <details>
+            <details class="details">
                 <summary>Ofte stilte spørsmål</summary>
                 <ul>
                     <li><strong>Lagring:</strong> Data lagres i <code>localStorage</code> og ligger der til
                         nettleserdata slettes.</li>
                     <li><strong>Lyd:</strong> Mobil-nettlesere krever et trykk først. Bruk “Aktiver lyd”.</li>
                     <li><strong>Varsler:</strong> Trykk “Tillat varsler” for systemvarsel når det er tid for oppvåkning.
+                    </li>
+                    <li> <button id="checkUpdateBtn" class="ghost">Sjekk oppdatering</button>
                     </li>
                 </ul>
             </details>
@@ -107,12 +113,18 @@
         </form>
     </dialog>
 
+
     <footer class="footer">
         <small>© Kristine Tyrholm – Sovetid PWA demo</small>
     </footer>
 
     <audio id="alarmAudio" src="sounds/soft_alarm.mp3" preload="auto"></audio>
-    <script src="app.js"></script>
+
+    <script>
+        window.VAPID_PUBLIC = "BCn94mAWWkTYkOwHORl0k3EyswuDZiEukFmmBldIx8TXAduxffKx9npcnbDV8YvrEzWlVWG5ihCP7W-fgD280Ko";
+    </script>
+    <script src="./app.js"></script>
+
 </body>
 
 </html>

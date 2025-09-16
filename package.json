@@ -1,0 +1,15 @@
+{
+  "name": "sleepcountdown",
+  "version": "1.0.0",
+  "description": "A simple, fast **Progressive Web App** for keeping track of children's nap times in kindergarten.  \r Runs completely offline, stores data only in the device's **localStorage**, and can play sound + send local notifications when it's time to wake a child.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "web-push": "^3.6.7"
+  }
+}
