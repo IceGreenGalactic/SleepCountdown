@@ -1,18 +1,45 @@
+const CORS = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "content-type",
+  "Access-Control-Allow-Methods": "POST,OPTIONS",
+};
+
 exports.handler = async (event) => {
   try {
-    if (event.httpMethod !== "POST") return { statusCode: 405, body: "" };
+    if (event.httpMethod === "OPTIONS")
+      return { statusCode: 204, headers: CORS, body: "" };
+    if (event.httpMethod !== "POST")
+      return { statusCode: 405, headers: CORS, body: "" };
+
+    if (!process.env.QSTASH_TOKEN) {
+      return {
+        statusCode: 500,
+        headers: CORS,
+        body: JSON.stringify({ error: "QSTASH_TOKEN missing" }),
+      };
+    }
 
     const body = JSON.parse(event.body || "{}");
     const { subscription, wakeAtIso, tag, gcAfterMs = 10800000 } = body;
     if (!subscription || !wakeAtIso) {
-      return { statusCode: 400, body: JSON.stringify({ error: "missing subscription or wakeAtIso" }) };
+      return {
+        statusCode: 400,
+        headers: CORS,
+        body: JSON.stringify({ error: "missing subscription or wakeAtIso" }),
+      };
     }
 
     const strip = (u) => (u || "").replace(/\/+$/, "");
-    const baseUrl =
-      strip(process.env.SITE_URL) ||
-      strip(process.env.URL) ||
-      strip(process.env.DEPLOY_PRIME_URL);
+    const baseUrl = strip(
+      process.env.SITE_URL || process.env.URL || process.env.DEPLOY_PRIME_URL
+    );
+    if (!baseUrl) {
+      return {
+        statusCode: 500,
+        headers: CORS,
+        body: JSON.stringify({ error: "SITE_URL/URL not resolved" }),
+      };
+    }
 
     const sendUrl = `${baseUrl}/.netlify/functions/send`;
     const cancelUrl = `${baseUrl}/.netlify/functions/cancel`;
@@ -33,7 +60,12 @@ exports.handler = async (event) => {
     if (!pubResp.ok) {
       return {
         statusCode: 502,
-        body: JSON.stringify({ stage: "publish", status: pubResp.status, text: pubText }),
+        headers: CORS,
+        body: JSON.stringify({
+          stage: "publish",
+          status: pubResp.status,
+          text: pubText,
+        }),
       };
     }
     const { messageId } = JSON.parse(pubText);
@@ -55,13 +87,26 @@ exports.handler = async (event) => {
     if (!gcResp.ok) {
       return {
         statusCode: 502,
-        body: JSON.stringify({ stage: "gc", status: gcResp.status, text: gcText }),
+        headers: CORS,
+        body: JSON.stringify({
+          stage: "gc",
+          status: gcResp.status,
+          text: gcText,
+        }),
       };
     }
     const { messageId: gcMessageId } = JSON.parse(gcText);
 
-    return { statusCode: 202, body: JSON.stringify({ messageId, gcMessageId }) };
+    return {
+      statusCode: 202,
+      headers: CORS,
+      body: JSON.stringify({ messageId, gcMessageId }),
+    };
   } catch (e) {
-    return { statusCode: 500, body: JSON.stringify({ error: "schedule exception", details: String(e) }) };
+    return {
+      statusCode: 500,
+      headers: CORS,
+      body: JSON.stringify({ error: "schedule exception", details: String(e) }),
+    };
   }
 };
