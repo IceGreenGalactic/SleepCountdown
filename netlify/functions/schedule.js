@@ -29,6 +29,16 @@ exports.handler = async (event) => {
       };
     }
 
+    const ts = new Date(wakeAtIso).getTime();
+    if (!Number.isFinite(ts)) {
+      return {
+        statusCode: 400,
+        headers: CORS,
+        body: JSON.stringify({ error: "invalid wakeAtIso" }),
+      };
+    }
+    const notBefore = Math.floor(ts / 1000).toString();
+
     const strip = (u) => (u || "").replace(/\/+$/, "");
     const baseUrl = strip(
       process.env.SITE_URL || process.env.URL || process.env.DEPLOY_PRIME_URL
@@ -51,7 +61,7 @@ exports.handler = async (event) => {
         headers: {
           Authorization: `Bearer ${process.env.QSTASH_TOKEN}`,
           "Content-Type": "application/json",
-          "Upstash-Schedule": new Date(wakeAtIso).toISOString(),
+          "Upstash-Not-Before": notBefore,
         },
         body: JSON.stringify({ subscription, tag }),
       }
