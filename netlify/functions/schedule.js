@@ -1,20 +1,22 @@
-const CORS = {
+const JSON_HEADERS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "content-type",
   "Access-Control-Allow-Methods": "POST,OPTIONS",
+  "Content-Type": "application/json",
 };
 
 exports.handler = async (event) => {
   try {
     if (event.httpMethod === "OPTIONS")
-      return { statusCode: 204, headers: CORS, body: "" };
+      return { statusCode: 204, headers: JSON_HEADERS, body: "" };
     if (event.httpMethod !== "POST")
-      return { statusCode: 405, headers: CORS, body: "" };
+      return { statusCode: 405, headers: JSON_HEADERS, body: "" };
 
-    if (!process.env.QSTASH_TOKEN) {
+    const token = process.env.QSTASH_TOKEN || "";
+    if (!token) {
       return {
         statusCode: 500,
-        headers: CORS,
+        headers: JSON_HEADERS,
         body: JSON.stringify({ error: "QSTASH_TOKEN missing" }),
       };
     }
@@ -24,7 +26,7 @@ exports.handler = async (event) => {
     if (!subscription || !wakeAtIso) {
       return {
         statusCode: 400,
-        headers: CORS,
+        headers: JSON_HEADERS,
         body: JSON.stringify({ error: "missing subscription or wakeAtIso" }),
       };
     }
@@ -33,7 +35,7 @@ exports.handler = async (event) => {
     if (!Number.isFinite(ts)) {
       return {
         statusCode: 400,
-        headers: CORS,
+        headers: JSON_HEADERS,
         body: JSON.stringify({ error: "invalid wakeAtIso" }),
       };
     }
@@ -46,7 +48,7 @@ exports.handler = async (event) => {
     if (!baseUrl) {
       return {
         statusCode: 500,
-        headers: CORS,
+        headers: JSON_HEADERS,
         body: JSON.stringify({ error: "SITE_URL/URL not resolved" }),
       };
     }
@@ -59,7 +61,7 @@ exports.handler = async (event) => {
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${process.env.QSTASH_TOKEN}`,
+          Authorization: `Bearer ${token.trim()}`,
           "Content-Type": "application/json",
           "Upstash-Not-Before": notBefore,
         },
@@ -70,7 +72,7 @@ exports.handler = async (event) => {
     if (!pubResp.ok) {
       return {
         statusCode: 502,
-        headers: CORS,
+        headers: JSON_HEADERS,
         body: JSON.stringify({
           stage: "publish",
           status: pubResp.status,
@@ -86,7 +88,7 @@ exports.handler = async (event) => {
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${process.env.QSTASH_TOKEN}`,
+          Authorization: `Bearer ${token.trim()}`,
           "Content-Type": "application/json",
           "Upstash-Delay": `${delaySeconds}s`,
         },
@@ -97,7 +99,7 @@ exports.handler = async (event) => {
     if (!gcResp.ok) {
       return {
         statusCode: 502,
-        headers: CORS,
+        headers: JSON_HEADERS,
         body: JSON.stringify({
           stage: "gc",
           status: gcResp.status,
@@ -109,13 +111,13 @@ exports.handler = async (event) => {
 
     return {
       statusCode: 202,
-      headers: CORS,
+      headers: JSON_HEADERS,
       body: JSON.stringify({ messageId, gcMessageId }),
     };
   } catch (e) {
     return {
       statusCode: 500,
-      headers: CORS,
+      headers: JSON_HEADERS,
       body: JSON.stringify({ error: "schedule exception", details: String(e) }),
     };
   }
