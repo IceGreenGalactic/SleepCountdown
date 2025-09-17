@@ -12,7 +12,7 @@ exports.handler = async (event) => {
     if (event.httpMethod !== "POST")
       return { statusCode: 405, headers: JSON_HEADERS, body: "" };
 
-    const token = process.env.QSTASH_TOKEN || "";
+    const token = (process.env.QSTASH_TOKEN || "").trim();
     if (!token) {
       return {
         statusCode: 500,
@@ -61,7 +61,7 @@ exports.handler = async (event) => {
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token.trim()}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
           "Upstash-Not-Before": notBefore,
         },
@@ -88,7 +88,7 @@ exports.handler = async (event) => {
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token.trim()}`,
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
           "Upstash-Delay": `${delaySeconds}s`,
         },
