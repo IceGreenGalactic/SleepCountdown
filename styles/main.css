@@ -157,7 +157,11 @@ button:disabled {
   color: var(--muted);
   font-size: 13px;
 }
-.wake-time { font-weight:700; color:var(--warn); font-size:1.1em; }
+.wake-time {
+  font-weight: 700;
+  color: var(--warn);
+  font-size: 1.1em;
+}
 
 .child .manual {
   margin-top: 10px;
@@ -207,7 +211,14 @@ button:disabled {
     animation: none;
   }
 }
-
+details ul {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+#checkUpdateBtn {
+max-width: 70%;
+}
 .footer {
   opacity: 0.7;
   text-align: center;
