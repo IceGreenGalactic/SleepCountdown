@@ -120,12 +120,14 @@ function render() {
       manualBtn.hidden = true;
       const now = Date.now();
       const remaining = child.wakeAtTs - now;
-times.textContent = ""; 
-const a = document.createTextNode(`Sovnet kl. ${fmtTime(child.napStartTs)} • Skal vekkes kl. `);
-const b = document.createElement("span");
-b.className = "wake-time";
-b.textContent = fmtTime(child.wakeAtTs);
-times.append(a, b);
+      times.textContent = "";
+      const a = document.createTextNode(
+        `Sovnet kl. ${fmtTime(child.napStartTs)} • Skal vekkes kl. `
+      );
+      const b = document.createElement("span");
+      b.className = "wake-time";
+      b.textContent = fmtTime(child.wakeAtTs);
+      times.append(a, b);
       if (remaining > 0) {
         status.innerHTML = `⏳ Tid igjen: <strong>${fmtDur(
           remaining
@@ -397,6 +399,9 @@ el.manualDialog?.addEventListener("click", (e) => {
 
 el.manualDialog?.addEventListener("cancel", (e) => {
   el.manualDialog.close();
+});
+document.getElementById("checkUpdateBtn")?.addEventListener("click", () => {
+  location.reload();
 });
 
 render();
