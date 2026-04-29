@@ -1,4 +1,4 @@
-# 🍼 Nap Time – Kindergarten (vanilla PWA)
+# 🍼 Sovetid (Nap Time) – Kindergarten PWA
 
 ### Sleep countdown for kindergarden
 
