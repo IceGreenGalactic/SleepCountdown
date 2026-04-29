@@ -6,6 +6,14 @@ A simple, fast **Progressive Web App** for keeping track of children's nap times
 Runs completely offline, stores data only in the device's **localStorage**, and can play sound + send local notifications when it's time to wake a child.
 
 
+## 🧠 Why I built this
+
+This app was created while I worked in a kindergarten, where we spent a lot of time manually calculating nap times and writing them down on paper.
+
+I wanted to quickly create a simple tool that could actually be used in daily work, so I focused on building something fast, reliable, and easy to use — rather than over-engineering it.
+
+The app replaced the manual paper-based system in my department and is still used in daily routines.
+
 
 ## ✨ Features
 
@@ -21,6 +29,36 @@ Runs completely offline, stores data only in the device's **localStorage**, and 
 - Update banner when a new version is available
 
 
+## 🤖 Use of AI in development
+
+AI was an important part of my workflow in this project.
+
+I used it to:
+- explore possible implementations
+- speed up development
+- debug and improve logic
+
+At the same time, I learned that AI needs clear context to be useful. Since this app is based on real kindergarten workflows, I had to carefully explain domain-specific details to get good results.
+
+This helped me develop a more critical and structured way of working with AI, where I validate and adapt suggestions rather than relying on them directly.
+
+## 🛠️ Technical choices
+
+This project is built using:
+- HTML
+- CSS
+- JavaScript
+
+I intentionally chose a simple stack instead of frameworks like React, because the goal was to deliver a working solution quickly in a real-world environment.
+
+The focus was on usability, performance, and reliability rather than complexity.
+
+## 📚 What I learned
+
+- How to build and ship a real-world solution quickly
+- The importance of simplicity over complexity in practical environments
+- How to use AI as a development tool, not just a shortcut
+- How domain knowledge impacts technical solutions
 
 ## 🚀 Run locally
 
