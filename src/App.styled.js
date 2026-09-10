@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { colors, spacing } from "./theme";
+import { colors, spacing, shadow } from "./theme";
 
 export const Container = styled.div`
   display: flex;
@@ -20,11 +20,11 @@ export const MainContent = styled.main`
 
 export const Card = styled.section`
   background: ${colors.card};
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid ${colors.borderSoft};
   border-radius: 14px;
   padding: ${spacing.lg};
   margin-bottom: ${spacing.lg};
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  box-shadow: ${shadow};
 `;
 
 export const Footer = styled.footer`

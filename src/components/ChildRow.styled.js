@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { spacing, colors } from "../theme";
+import { spacing, colors, breakpoints } from "../theme";
 
 // Main row container
 export const ChildRowContainer = styled.div`
@@ -8,50 +8,50 @@ export const ChildRowContainer = styled.div`
   gap: ${spacing.md};
   align-items: start;
   padding: ${spacing.md};
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid ${colors.border};
   border-radius: 8px;
   margin-bottom: ${spacing.md};
   transition: all 0.25s ease;
-  background: rgba(255, 255, 255, 0.02);
+  background: ${colors.surfaceSubtle};
   position: relative;
 
   &.ready {
-    border-color: rgba(52, 211, 153, 0.2);
+    border-color: ${colors.okSoft};
   }
 
   &.due {
     border: 2px solid ${colors.warn};
-    background: rgba(251, 191, 36, 0.08);
+    background: ${colors.warnSoft};
     animation: duePulse 1.2s ease-in-out infinite;
   }
 
   &.overdue {
     border: 2px solid ${colors.danger};
-    background: rgba(239, 68, 68, 0.08);
+    background: ${colors.dangerSoft};
     animation: overduePulse 1s ease-in-out infinite;
   }
 
   @keyframes duePulse {
     0%,
     100% {
-      box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.2);
+      box-shadow: 0 0 0 0 ${colors.warnPulse};
     }
     50% {
-      box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.1);
+      box-shadow: 0 0 0 3px ${colors.warnPulseSoft};
     }
   }
 
   @keyframes overduePulse {
     0%,
     100% {
-      box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.3);
+      box-shadow: 0 0 0 0 ${colors.dangerPulse};
     }
     50% {
-      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+      box-shadow: 0 0 0 3px ${colors.dangerPulseSoft};
     }
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: ${breakpoints.mobile}) {
     grid-template-columns: 1fr;
   }
 `;
@@ -118,7 +118,7 @@ export const Timeline = styled.div`
 export const TimelineTime = styled.span`
   white-space: nowrap;
   font-size: 16px;
-  color: Orange;
+  color: ${colors.warn};
 `;
 
 export const TimelineSeparator = styled.span`
@@ -138,11 +138,13 @@ export const TimerDisplay = styled.div`
 
 // Large timer text
 export const Timer = styled.div`
-  font-size: 22px;
-  font-weight: 700;
-  font-family: "Monaco", "Courier New", monospace;
-  color: ${({ $isOverdue }) => ($isOverdue ? colors.danger : colors.accent)};
-  letter-spacing: 1px;
+  font-size: 23px;
+  font-weight: 650;
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+  color: ${({ $isOverdue }) =>
+    $isOverdue ? colors.danger : colors.accent};
+  letter-spacing: 0;
   text-align: center;
 `;
 
@@ -161,7 +163,7 @@ export const ActionsSection = styled.div`
   align-items: stretch;
 `;
 
-// Primary actions group (Start/Manual or Stop)
+// Primary actions group
 export const PrimaryActions = styled.div`
   display: flex;
   flex-direction: column;
@@ -187,12 +189,12 @@ export const StopButton = styled.button`
   min-height: 40px;
   font-size: 13px;
   font-weight: 600;
-  background: rgba(239, 68, 68, 0.15);
+  background: ${colors.dangerMedium};
   border-color: ${colors.danger};
   color: ${colors.danger};
 
   &:hover:not(:disabled) {
-    background: rgba(239, 68, 68, 0.25);
+    background: ${colors.dangerStrong};
   }
 
   &.urgent {
@@ -202,7 +204,7 @@ export const StopButton = styled.button`
   }
 
   &.urgent:hover:not(:disabled) {
-    background: #dc2626;
+    background: ${colors.dangerHover};
   }
 `;
 
@@ -220,12 +222,12 @@ export const MenuButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: ${colors.surfaceSoft};
+  border: 1px solid ${colors.border};
 
   &:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.15);
+    background: ${colors.surfaceHover};
+    border-color: ${colors.borderStrong};
   }
 `;
 
@@ -236,7 +238,7 @@ export const DropdownMenu = styled.div`
   top: 100%;
   margin-top: 2px;
   background: ${colors.card};
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid ${colors.border};
   border-radius: 6px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   z-index: 10;
@@ -261,7 +263,7 @@ export const MenuItem = styled.button`
   font-weight: 500;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: ${colors.surfaceHover};
   }
 
   &.danger {
@@ -269,9 +271,8 @@ export const MenuItem = styled.button`
   }
 
   &.danger:hover {
-    background: rgba(239, 68, 68, 0.1);
+    background: ${colors.dangerSoft};
   }
 `;
 
-// Default export for backwards compatibility
 export default ChildRowContainer;

@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { colors, spacing } from '../theme';
+import styled from "styled-components";
+import { colors, spacing, shadow, breakpoints } from "../theme";
 
 export default styled.div`
   background: ${colors.card};
@@ -7,7 +7,7 @@ export default styled.div`
   border-radius: 14px;
   padding: ${spacing.lg};
   margin-bottom: ${spacing.lg};
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  box-shadow: ${shadow};
 
   > div:first-child {
     margin-bottom: ${spacing.md};
@@ -26,7 +26,7 @@ export default styled.div`
     min-width: 120px;
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: ${breakpoints.mobile}) {
     .actions {
       flex-direction: column;
     }

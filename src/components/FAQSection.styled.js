@@ -41,7 +41,7 @@ export const FAQWrapper = styled.div`
     }
 
     code {
-      background: rgba(14, 165, 233, 0.1);
+      background: ${colors.accentSoft};
       padding: 2px 6px;
       border-radius: 4px;
       font-family: "Courier New", monospace;

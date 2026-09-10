@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { colors, spacing } from '../theme';
+import styled from "styled-components";
+import { colors, spacing, breakpoints, shadowDialog } from "../theme";
 
 export default styled.div`
   position: fixed;
@@ -7,7 +7,7 @@ export default styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.45);
+  background: ${colors.overlay};
   backdrop-filter: blur(2px);
   display: flex;
   align-items: center;
@@ -17,14 +17,14 @@ export default styled.div`
   .dialog-content {
     position: relative;
     background: ${colors.card};
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid ${colors.border};
     border-radius: 16px;
     padding: 18px 16px;
     width: 100%;
     max-width: 400px;
     max-height: 70vh;
     overflow-y: auto;
-    box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.4);
+    box-shadow: ${shadowDialog};
     color: ${colors.text};
   }
 
@@ -34,7 +34,7 @@ export default styled.div`
     right: 8px;
     background: transparent !important;
     border: 0 !important;
-    color: #9fb0c9;
+    color: ${colors.muted};
     font-size: 20px;
     line-height: 1;
     padding: 6px;
@@ -44,7 +44,7 @@ export default styled.div`
   }
 
   .dialog-close:hover {
-    background: rgba(255, 255, 255, 0.06) !important;
+    background: ${colors.borderSoft} !important;
   }
 
   form {
@@ -74,7 +74,7 @@ export default styled.div`
     }
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: ${breakpoints.mobile}) {
     .dialog-content {
       width: calc(100% - ${spacing.lg});
       margin: ${spacing.md};

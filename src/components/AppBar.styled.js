@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { colors, spacing } from '../theme';
+import styled from "styled-components";
+import { colors, spacing, breakpoints } from "../theme";
 
 export default styled.header`
   position: sticky;
@@ -9,9 +9,9 @@ export default styled.header`
   align-items: center;
   justify-content: space-between;
   padding: ${spacing.md} ${spacing.lg};
-  background: rgba(10, 15, 37, 0.78);
+  background: ${colors.card};
+  border-bottom: 1px solid ${colors.borderSoft};
   backdrop-filter: blur(6px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 
   h1 {
     margin: 0;

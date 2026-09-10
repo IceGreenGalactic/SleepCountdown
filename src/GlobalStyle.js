@@ -8,16 +8,16 @@ export default createGlobalStyle`
 
   html,
   body {
-    height: 100%;
+    min-height: 100%;
     margin: 0;
   }
 
   body {
     margin: 0;
     font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-    background: linear-gradient(180deg, #0a0f25, #0b132b 50%, #0a0f25);
+    background: ${colors.bg};
     color: ${colors.text};
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
   }
@@ -25,7 +25,7 @@ export default createGlobalStyle`
   #root {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    min-height: 100vh;
   }
 
   main {
@@ -53,8 +53,8 @@ export default createGlobalStyle`
     width: 100%;
     padding: 8px 10px;
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid ${colors.border};
+    background: ${colors.surfaceSoft};
     color: ${colors.text};
     margin-top: 4px;
     font-family: inherit;
@@ -65,13 +65,13 @@ export default createGlobalStyle`
   input:focus {
     outline: none;
     border-color: ${colors.accent};
-    background: rgba(255, 255, 255, 0.08);
-    box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.1);
+    background: ${colors.surfaceHover};
+    box-shadow: 0 0 0 2px ${colors.accentSoft};
   }
 
   button {
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid ${colors.border};
+    background: ${colors.surfaceSoft};
     color: ${colors.text};
     padding: 8px 12px;
     border-radius: 8px;
@@ -88,7 +88,7 @@ export default createGlobalStyle`
 
   button:hover:not(:disabled) {
     border-color: ${colors.accent};
-    background: rgba(14, 165, 233, 0.1);
+    background: ${colors.accentSoft};
   }
 
   button.primary {
@@ -99,15 +99,16 @@ export default createGlobalStyle`
   }
 
   button.primary:hover:not(:disabled) {
-    background: #0d96d9;
+    background: ${colors.accentHover};
   }
 
   button.danger {
+    border-color: ${colors.danger};
     color: ${colors.danger};
   }
 
   button.danger:hover:not(:disabled) {
-    background: rgba(239, 68, 68, 0.1);
+    background: ${colors.dangerSoft};
     border-color: ${colors.danger};
   }
 
@@ -117,12 +118,7 @@ export default createGlobalStyle`
   }
 
   button.ghost:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.1);
-  }
-
-  button.danger {
-    border-color: ${colors.danger};
-    color: ${colors.danger};
+    background: ${colors.surfaceHover};
   }
 
   button.warn {
@@ -138,24 +134,6 @@ export default createGlobalStyle`
   button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-  }
-
-  @keyframes bgPulse {
-    0%, 100% {
-      background-size: 100% 100%;
-    }
-    50% {
-      background-size: 105% 105%;
-    }
-  }
-
-  @keyframes bgPulseFast {
-    0%, 100% {
-      background-size: 100% 100%;
-    }
-    50% {
-      background-size: 110% 110%;
-    }
   }
 
   @media (prefers-reduced-motion: reduce) {

@@ -1,12 +1,51 @@
 export const colors = {
-  bg: "#0f1419",
-  card: "#1a1f35",
-  text: "#e8f4f8",
-  muted: "#8fa3b8",
-  accent: "#0ea5e9",
-  danger: "#ef4444",
-  ok: "#34d399",
-  warn: "#fbbf24",
+  // Base
+  bg: "#161719",
+  card: "#202226",
+  surface: "#292c31",
+
+  // Text
+  text: "#f3f3f1",
+  muted: "#9fa2a8",
+
+  // Accent
+  accent: "#a7a0d9",
+  accentHover: "#bbb5e8",
+
+  accentSoft: "rgba(167, 160, 217, 0.12)",
+  accentSoftHover: "rgba(167, 160, 217, 0.18)",
+  accentBorder: "rgba(167, 160, 217, 0.30)",
+  accentBorderHover: "rgba(167, 160, 217, 0.50)",
+
+  // Neutral surfaces / borders
+  border: "rgba(255, 255, 255, 0.10)",
+  borderSoft: "rgba(255, 255, 255, 0.06)",
+  borderStrong: "rgba(255, 255, 255, 0.15)",
+
+  surfaceSoft: "rgba(255, 255, 255, 0.05)",
+  surfaceSubtle: "rgba(255, 255, 255, 0.025)",
+  surfaceHover: "rgba(255, 255, 255, 0.10)",
+
+  // Status: red
+  danger: "#ef6461",
+  dangerHover: "#e34f4b",
+  dangerSoft: "rgba(239, 100, 97, 0.10)",
+  dangerMedium: "rgba(239, 100, 97, 0.15)",
+  dangerStrong: "rgba(239, 100, 97, 0.25)",
+  dangerPulse: "rgba(239, 100, 97, 0.30)",
+  dangerPulseSoft: "rgba(239, 100, 97, 0.15)",
+
+  // Status: green
+  ok: "#6fcf8d",
+  okSoft: "rgba(111, 207, 141, 0.20)",
+
+  // Status: yellow
+  warn: "#f0bd5e",
+  warnSoft: "rgba(240, 189, 94, 0.08)",
+  warnPulse: "rgba(240, 189, 94, 0.20)",
+  warnPulseSoft: "rgba(240, 189, 94, 0.10)",
+
+  overlay: "rgba(0, 0, 0, 0.55)",
 };
 
 export const spacing = {
@@ -17,8 +56,8 @@ export const spacing = {
   xl: "16px",
 };
 
-export const shadow = "0 10px 25px rgba(0, 0, 0, 0.25)";
-export const shadowDialog = "0 -8px 30px rgba(0, 0, 0, 0.4)";
+export const shadow = "0 10px 25px rgba(0, 0, 0, 0.28)";
+export const shadowDialog = "0 -8px 30px rgba(0, 0, 0, 0.45)";
 
 export const breakpoints = {
   mobile: "600px",

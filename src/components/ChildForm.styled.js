@@ -14,23 +14,23 @@ export const ToggleButton = styled.button`
   display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(14, 165, 233, 0.12);
-  border: 1px solid rgba(14, 165, 233, 0.3);
+  background: ${colors.accentSoft};
+  border: 1px solid ${colors.accentBorder};
   color: ${colors.accent};
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
 
   &:hover {
-    background: rgba(14, 165, 233, 0.18);
-    border-color: rgba(14, 165, 233, 0.5);
+    background: ${colors.accentSoftHover};
+    border-color: ${colors.accentBorderHover};
   }
 `;
 
 export const FormContent = styled.div`
   display: ${({ $isOpen }) => ($isOpen ? "block" : "none")};
   padding-top: ${spacing.md};
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid ${colors.borderSoft};
 `;
 
 export const Form = styled.form`
