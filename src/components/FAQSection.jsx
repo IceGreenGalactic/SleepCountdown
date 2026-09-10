@@ -1,0 +1,91 @@
+import styled from 'styled-components';
+import { spacing, colors } from '../theme';
+
+const FAQWrapper = styled.div`
+  details {
+    cursor: pointer;
+  }
+
+  summary {
+    font-weight: 600;
+    font-size: 15px;
+    color: ${colors.text};
+    user-select: none;
+    padding: 4px 0;
+
+    &:hover {
+      color: ${colors.accent};
+    }
+  }
+
+  summary::-webkit-details-marker {
+    color: ${colors.accent};
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: ${spacing.xl};
+    margin: ${spacing.lg} 0 0 0;
+    padding-left: 0;
+    list-style: none;
+  }
+
+  li {
+    color: ${colors.text};
+    line-height: 1.5;
+    font-size: 14px;
+
+    strong {
+      color: ${colors.accent};
+    }
+
+    code {
+      background: rgba(14, 165, 233, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      color: ${colors.accent};
+    }
+  }
+
+  button {
+    margin-top: ${spacing.md};
+    display: block;
+  }
+`;
+
+export default function FAQSection() {
+  return (
+    <FAQWrapper>
+      <details>
+        <summary>Ofte stilte spørsmål</summary>
+        <ul>
+          <li>
+            <strong>Lagring:</strong> Data lagres i <code>localStorage</code> og
+            ligger der til nettleserdata slettes.
+          </li>
+          <li>
+            <strong>Lyd:</strong> Mobil-nettlesere krever et trykk først. Bruk
+            "Aktiver lyd"-knappen øverst.
+          </li>
+          <li>
+            <strong>Varsler:</strong> Trykk "Tillat varsler" for systemvarsel
+            når det er tid for oppvåkning.
+          </li>
+          <li>
+            <button
+              type="button"
+              className="ghost"
+              onClick={() => location.reload()}
+              title="Sjekk etter ny versjon og laste siden på nytt"
+            >
+              🔄 Sjekk oppdatering
+            </button>
+          </li>
+        </ul>
+      </details>
+    </FAQWrapper>
+  );
+}
