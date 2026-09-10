@@ -4,7 +4,7 @@ export const colors = {
   section: "#393c52",
   card: "#30343f",
   surface: "#393e4a",
-  
+
   text: "#f4f4f4",
   muted: "#aeb4c2",
 

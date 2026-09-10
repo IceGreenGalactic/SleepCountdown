@@ -19,21 +19,20 @@ export const ChildRowContainer = styled.div`
     border-color: ${colors.okSoft};
   }
 
-&.due {
-  border: 2px solid ${colors.warn};
-  background:
-    linear-gradient(${colors.warnSoft}, ${colors.warnSoft}),
-    ${colors.card};
-  animation: duePulse 1.2s ease-in-out infinite;
-}
+  &.due {
+    border: 2px solid ${colors.warn};
+    background:
+      linear-gradient(${colors.warnSoft}, ${colors.warnSoft}), ${colors.card};
+    animation: duePulse 1.2s ease-in-out infinite;
+  }
 
-&.overdue {
-  border: 2px solid ${colors.danger};
-  background:
-    linear-gradient(${colors.dangerSoft}, ${colors.dangerSoft}),
-    ${colors.card};
-  animation: overduePulse 1s ease-in-out infinite;
-}
+  &.overdue {
+    border: 2px solid ${colors.danger};
+    background:
+      linear-gradient(${colors.dangerSoft}, ${colors.dangerSoft}),
+      ${colors.card};
+    animation: overduePulse 1s ease-in-out infinite;
+  }
   @keyframes duePulse {
     0%,
     100% {
@@ -145,8 +144,7 @@ export const Timer = styled.div`
   font-weight: 650;
   font-family: inherit;
   font-variant-numeric: tabular-nums;
-  color: ${({ $isOverdue }) =>
-    $isOverdue ? colors.danger : colors.accent};
+  color: ${({ $isOverdue }) => ($isOverdue ? colors.danger : colors.accent)};
   letter-spacing: 0;
   text-align: center;
 `;

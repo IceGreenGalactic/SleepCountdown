@@ -1,4 +1,4 @@
-import AppBarStyled from './AppBar.styled';
+import AppBarStyled from "./AppBar.styled";
 
 export default function AppBar({ soundEnabled, onEnableSound, onEnableNotif }) {
   return (
@@ -8,9 +8,9 @@ export default function AppBar({ soundEnabled, onEnableSound, onEnableNotif }) {
         <button
           onClick={onEnableSound}
           disabled={soundEnabled}
-          title={soundEnabled ? 'Lyd er aktivert' : 'Aktiver lyd for alarm'}
+          title={soundEnabled ? "Lyd er aktivert" : "Aktiver lyd for alarm"}
         >
-          {soundEnabled ? 'Lyd aktivert ✅' : 'Aktiver lyd'}
+          {soundEnabled ? "Lyd aktivert ✅" : "Aktiver lyd"}
         </button>
         <button
           onClick={onEnableNotif}

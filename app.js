@@ -79,7 +79,7 @@ function parseTimeToTimestamp(hhmm) {
     hh,
     mm,
     0,
-    0
+    0,
   );
   const ts = d.getTime();
   return ts > Date.now() ? ts - 24 * 60 * 60 * 1000 : ts;
@@ -102,9 +102,8 @@ function render() {
     node.dataset.id = child.id;
 
     node.querySelector(".name").textContent = child.name;
-    node.querySelector(
-      ".prefs"
-    ).textContent = `Maks sovetid: ${child.maxMinutes} min`;
+    node.querySelector(".prefs").textContent =
+      `Maks sovetid: ${child.maxMinutes} min`;
 
     const status = node.querySelector(".status");
     const times = node.querySelector(".times");
@@ -122,7 +121,7 @@ function render() {
       const remaining = child.wakeAtTs - now;
       times.textContent = "";
       const a = document.createTextNode(
-        `Sovnet kl. ${fmtTime(child.napStartTs)} • Skal vekkes kl. `
+        `Sovnet kl. ${fmtTime(child.napStartTs)} • Skal vekkes kl. `,
       );
       const b = document.createElement("span");
       b.className = "wake-time";
@@ -130,7 +129,7 @@ function render() {
       times.append(a, b);
       if (remaining > 0) {
         status.innerHTML = `⏳ Tid igjen: <strong>${fmtDur(
-          remaining
+          remaining,
         )}</strong>`;
         if (remaining <= 60_000) node.classList.add("due");
       } else {
@@ -147,13 +146,13 @@ function render() {
         const last = child.logs[0];
         times.textContent = `${fmtRange(
           last.start,
-          last.end
+          last.end,
         )} – sovet ${fmtDurShort(last.durMs)}`;
       }
     }
 
     startBtn.addEventListener("click", () =>
-      startNap(child.id, Date.now(), null)
+      startNap(child.id, Date.now(), null),
     );
     manualBtn.addEventListener("click", () => openManualDialog(child.id));
     stopBtn.addEventListener("click", () => stopNap(child.id));

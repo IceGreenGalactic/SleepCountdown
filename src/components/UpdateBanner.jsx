@@ -1,4 +1,4 @@
-import UpdateBannerStyled from './UpdateBanner.styled';
+import UpdateBannerStyled from "./UpdateBanner.styled";
 
 export default function UpdateBanner({ onUpdate, onDismiss }) {
   return (

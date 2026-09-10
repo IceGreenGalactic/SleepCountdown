@@ -2,7 +2,7 @@ export const uid = () => Math.random().toString(36).slice(2, 10);
 
 export const fmtTime = (ts) => {
   const d = new Date(ts);
-  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 };
 
 export const fmtDur = (ms) => {
@@ -29,7 +29,7 @@ export const fmtDurShort = (ms) => {
 
 export const parseTimeToTimestamp = (hhmm) => {
   if (!hhmm) return null;
-  const [hh, mm] = hhmm.split(':').map(Number);
+  const [hh, mm] = hhmm.split(":").map(Number);
   const now = new Date();
   const d = new Date(
     now.getFullYear(),
@@ -38,19 +38,19 @@ export const parseTimeToTimestamp = (hhmm) => {
     hh,
     mm,
     0,
-    0
+    0,
   );
   const ts = d.getTime();
   return ts > Date.now() ? ts - 24 * 60 * 60 * 1000 : ts;
 };
 
 export const saveChildren = (children) => {
-  localStorage.setItem('children.v1', JSON.stringify(children));
+  localStorage.setItem("children.v1", JSON.stringify(children));
 };
 
 export const loadChildren = () => {
   try {
-    const raw = localStorage.getItem('children.v1');
+    const raw = localStorage.getItem("children.v1");
     return raw ? JSON.parse(raw) : [];
   } catch {
     return [];

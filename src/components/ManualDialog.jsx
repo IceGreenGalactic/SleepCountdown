@@ -1,18 +1,18 @@
-import { useState, useEffect } from 'react';
-import ManualDialogStyled from './ManualDialog.styled';
-import { parseTimeToTimestamp } from '../helpers';
+import { useState, useEffect } from "react";
+import ManualDialogStyled from "./ManualDialog.styled";
+import { parseTimeToTimestamp } from "../helpers";
 
 export default function ManualDialog({ isOpen, childName, onSubmit, onClose }) {
-  const [startTime, setStartTime] = useState('');
-  const [overrideMinutes, setOverrideMinutes] = useState('');
+  const [startTime, setStartTime] = useState("");
+  const [overrideMinutes, setOverrideMinutes] = useState("");
 
   useEffect(() => {
     if (isOpen) {
-      setStartTime('');
-      setOverrideMinutes('');
+      setStartTime("");
+      setOverrideMinutes("");
       // Focus first input when dialog opens
       setTimeout(() => {
-        const input = document.querySelector('[data-dialog-focus]');
+        const input = document.querySelector("[data-dialog-focus]");
         input?.focus();
       }, 0);
     }
@@ -21,12 +21,12 @@ export default function ManualDialog({ isOpen, childName, onSubmit, onClose }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!startTime) {
-      alert('Vennligst oppgi starttid');
+      alert("Vennligst oppgi starttid");
       return;
     }
     const ts = parseTimeToTimestamp(startTime);
     if (!ts) {
-      alert('Ugyldig starttid');
+      alert("Ugyldig starttid");
       return;
     }
     onSubmit(startTime, overrideMinutes ? Number(overrideMinutes) : null);
@@ -54,7 +54,9 @@ export default function ManualDialog({ isOpen, childName, onSubmit, onClose }) {
 
         <form onSubmit={handleSubmit}>
           <h3>Manuell start</h3>
-          <p style={{ color: '#94a3b8', fontSize: '13px', margin: '0 0 16px 0' }}>
+          <p
+            style={{ color: "#94a3b8", fontSize: "13px", margin: "0 0 16px 0" }}
+          >
             {childName}
           </p>
 
