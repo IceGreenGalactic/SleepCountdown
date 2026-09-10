@@ -1,53 +1,19 @@
-import { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { colors, spacing } from './theme';
-import { loadChildren, saveChildren, parseTimeToTimestamp } from './helpers';
-import AppBar from './components/AppBar';
-import ChildForm from './components/ChildForm';
-import ChildList from './components/ChildList';
-import ManualDialog from './components/ManualDialog';
-import UpdateBanner from './components/UpdateBanner';
-import FAQSection from './components/FAQSection';
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-`;
-
-const MainContent = styled.main`
-  flex: 1;
-  max-width: 900px;
-  margin: 0 auto;
-  width: 100%;
-  padding: 0 ${spacing.md};
-  padding-top: ${spacing.xl};
-  padding-bottom: ${spacing.lg};
-  overflow-y: auto;
-`;
-
-const Card = styled.section`
-  background: ${colors.card};
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 14px;
-  padding: ${spacing.lg};
-  margin-bottom: ${spacing.lg};
-  box-shadow: ${({ theme }) => theme?.shadow || '0 10px 25px rgba(0, 0, 0, 0.25)'};
-`;
-
-const Footer = styled.footer`
-  opacity: 0.7;
-  text-align: center;
-  padding: ${spacing.lg};
-  font-size: 12px;
-  color: ${colors.muted};
-`;
+import { useState, useEffect } from "react";
+import { loadChildren, saveChildren, parseTimeToTimestamp } from "./helpers";
+import AppBar from "./components/AppBar";
+import ChildForm from "./components/ChildForm";
+import ChildList from "./components/ChildList";
+import ManualDialog from "./components/ManualDialog";
+import UpdateBanner from "./components/UpdateBanner";
+import FAQSection from "./components/FAQSection";
+import { Container, MainContent, Card, Footer } from "./App.styled";
 
 function App() {
   const [children, setChildren] = useState(() => loadChildren());
   const [soundEnabled, setSoundEnabled] = useState(false);
   const [notifPermission, setNotifPermission] = useState(
-    typeof Notification !== 'undefined' && Notification.permission === 'granted'
+    typeof Notification !== "undefined" &&
+      Notification.permission === "granted",
   );
   const [updateAvailable, setUpdateAvailable] = useState(false);
   const [editingId, setEditingId] = useState(null);
@@ -84,16 +50,16 @@ function App() {
 
   // Service Worker registration
   useEffect(() => {
-    if ('serviceWorker' in navigator) {
+    if ("serviceWorker" in navigator) {
       navigator.serviceWorker
-        .register('./sw.js')
+        .register("./sw.js")
         .then((reg) => {
-          reg.addEventListener('updatefound', () => {
+          reg.addEventListener("updatefound", () => {
             const newWorker = reg.installing;
             if (!newWorker) return;
-            newWorker.addEventListener('statechange', () => {
+            newWorker.addEventListener("statechange", () => {
               if (
-                newWorker.state === 'installed' &&
+                newWorker.state === "installed" &&
                 navigator.serviceWorker.controller
               ) {
                 setUpdateUI({ waitingSW: reg.waiting || newWorker });
@@ -110,7 +76,7 @@ function App() {
           // SW registration failed
         });
 
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
+      navigator.serviceWorker.addEventListener("controllerchange", () => {
         window.location.reload();
       });
     }
@@ -123,15 +89,18 @@ function App() {
       // Store event for later use if needed
     };
 
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
     return () =>
-      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+      window.removeEventListener(
+        "beforeinstallprompt",
+        handleBeforeInstallPrompt,
+      );
   }, []);
 
   const triggerAlarm = (child) => {
     if (soundEnabled) {
       try {
-        const audio = document.getElementById('alarmAudio');
+        const audio = document.getElementById("alarmAudio");
         if (audio) {
           audio.currentTime = 0;
           audio.play().catch(() => {});
@@ -141,9 +110,9 @@ function App() {
 
     if (notifPermission && navigator.serviceWorker) {
       navigator.serviceWorker.ready.then((reg) => {
-        reg.showNotification('Tid for oppvåkning', {
+        reg.showNotification("Tid for oppvåkning", {
           body: `${child.name} skal vekkes nå`,
-          icon: '/icons/icon-192.png',
+          icon: "/icons/icon-192.png",
           vibrate: [200, 100, 200],
           tag: `wake-${child.id}`,
         });
@@ -169,14 +138,14 @@ function App() {
       prev.map((c) =>
         c.id === id
           ? { ...c, name: name.trim(), maxMinutes: Number(maxMinutes) }
-          : c
-      )
+          : c,
+      ),
     );
     setEditingId(null);
   };
 
   const deleteChild = (id) => {
-    if (confirm('Slette barnet?')) {
+    if (confirm("Slette barnet?")) {
       setChildren((prev) => prev.filter((c) => c.id !== id));
     }
   };
@@ -197,7 +166,7 @@ function App() {
           };
         }
         return c;
-      })
+      }),
     );
   };
 
@@ -217,13 +186,13 @@ function App() {
           };
         }
         return c;
-      })
+      }),
     );
   };
 
   const handleEnableSound = async () => {
     try {
-      const audio = document.getElementById('alarmAudio');
+      const audio = document.getElementById("alarmAudio");
       if (audio) {
         await audio.play();
         audio.pause();
@@ -231,24 +200,24 @@ function App() {
         setSoundEnabled(true);
       }
     } catch {
-      alert('Kunne ikke aktivere lyd. Prøv igjen etter et klikk/trykk.');
+      alert("Kunne ikke aktivere lyd. Prøv igjen etter et klikk/trykk.");
     }
   };
 
   const handleEnableNotif = async () => {
-    if (typeof Notification === 'undefined') {
-      alert('Varsler støttes ikke i denne nettleseren.');
+    if (typeof Notification === "undefined") {
+      alert("Varsler støttes ikke i denne nettleseren.");
       return;
     }
     const perm = await Notification.requestPermission();
-    if (perm === 'granted') {
+    if (perm === "granted") {
       setNotifPermission(true);
     }
   };
 
   const handleUpdate = () => {
     if (updateUI.waitingSW) {
-      updateUI.waitingSW.postMessage('SKIP_WAITING');
+      updateUI.waitingSW.postMessage("SKIP_WAITING");
     }
   };
 
@@ -274,8 +243,8 @@ function App() {
               }
             }}
             onCancel={() => setEditingId(null)}
-            initialName={childToEdit?.name || ''}
-            initialMinutes={childToEdit?.maxMinutes || ''}
+            initialName={childToEdit?.name || ""}
+            initialMinutes={childToEdit?.maxMinutes || ""}
             isEditing={!!editingId}
           />
         </Card>
@@ -307,7 +276,7 @@ function App() {
       <ManualDialog
         isOpen={!!manualDialogChildId}
         childName={
-          children.find((c) => c.id === manualDialogChildId)?.name || ''
+          children.find((c) => c.id === manualDialogChildId)?.name || ""
         }
         onSubmit={(startTime, overrideMinutes) => {
           const ts = parseTimeToTimestamp(startTime);
@@ -315,7 +284,7 @@ function App() {
             startNap(manualDialogChildId, ts, overrideMinutes);
             setManualDialogChildId(null);
           } else {
-            alert('Ugyldig starttid');
+            alert("Ugyldig starttid");
           }
         }}
         onClose={() => setManualDialogChildId(null)}

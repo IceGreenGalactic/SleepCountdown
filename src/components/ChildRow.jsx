@@ -1,6 +1,29 @@
 import { useState, useEffect } from "react";
-import ChildRowStyled from "./ChildRow.styled";
 import { fmtTime, fmtDur, fmtRange, fmtDurShort } from "../helpers";
+import {
+  ChildRowContainer,
+  MetaSection,
+  Header,
+  Name,
+  BadgeSection,
+  BadgeText,
+  Timeline,
+  TimelineTime,
+  TimelineSeparator,
+  MaxNap,
+  TimerDisplay,
+  Timer,
+  History,
+  ActionsSection,
+  PrimaryActions,
+  StartButton,
+  ManualButton,
+  StopButton,
+  MenuContainer,
+  MenuButton,
+  DropdownMenu,
+  MenuItem,
+} from "./ChildRow.styled";
 
 export default function ChildRow({
   child,
@@ -57,98 +80,90 @@ export default function ChildRow({
   const over = isOverdue ? Math.abs(remaining) : 0;
 
   return (
-    <ChildRowStyled
+    <ChildRowContainer
       className={isOverdue ? "overdue" : isDue ? "due" : "ready"}
       onClick={() => setShowMenu(false)}
     >
-      <div className="meta">
-        <div className="header">
-          <div className="name">{child.name}</div>
-          <div className="badge">
-            {isOverdue && <span className="badge-overdue">🚨 Over tiden</span>}
+      <MetaSection>
+        <Header>
+          <Name>{child.name}</Name>
+          <BadgeSection>
+            {isOverdue && (
+              <BadgeText variant="overdue">🚨 Over tiden</BadgeText>
+            )}
             {isDue && !isOverdue && (
-              <span className="badge-due">⚠️ Snart opp</span>
+              <BadgeText variant="due">⚠️ Snart opp</BadgeText>
             )}
             {isActive && !isDue && !isOverdue && (
-              <span className="badge-active">⏳ Sover</span>
+              <BadgeText variant="active">⏳ Sover</BadgeText>
             )}
-            {!isActive && <span className="badge-ready">🟢 Våken</span>}
-          </div>
-          <div className="menu-container">
-            <button
-              className="btn-menu"
+            {!isActive && <BadgeText variant="ready">🟢 Våken</BadgeText>}
+          </BadgeSection>
+          <MenuContainer>
+            <MenuButton
               onClick={handleMenuClick}
               title="More options"
               aria-label="Menu"
             >
               ⋮
-            </button>
+            </MenuButton>
             {showMenu && (
-              <div className="dropdown-menu">
-                <button className="menu-item" onClick={handleEdit}>
-                  Rediger
-                </button>
-                <button className="menu-item danger" onClick={handleDelete}>
+              <DropdownMenu>
+                <MenuItem onClick={handleEdit}>Rediger</MenuItem>
+                <MenuItem className="danger" onClick={handleDelete}>
                   Slett
-                </button>
-              </div>
+                </MenuItem>
+              </DropdownMenu>
             )}
-          </div>
-        </div>
+          </MenuContainer>
+        </Header>
+
+        {isActive && (
+          <TimerDisplay>
+            {isOverdue ? (
+              <Timer $isOverdue>{over > 0 ? fmtDur(over) : "0:00"} OVER</Timer>
+            ) : (
+              <Timer>{fmtDur(remaining)}</Timer>
+            )}
+          </TimerDisplay>
+        )}
 
         {isActive ? (
-          <div className="timeline">
+          <Timeline>
             Skal opp:
-            <span className="end-time">{fmtTime(child.wakeAtTs)}</span>
-          </div>
+            <TimelineTime>{fmtTime(child.wakeAtTs)}</TimelineTime>
+          </Timeline>
         ) : (
-          <div className="max-nap">{child.maxMinutes} min max</div>
+          <MaxNap>{child.maxMinutes} min max</MaxNap>
         )}
-
-        {isActive && (
-          <div className="timer-display">
-            {isOverdue ? (
-              <div className="timer overdue-text">
-                {over > 0 ? fmtDur(over) : "0:00"} OVER
-              </div>
-            ) : (
-              <div className="timer">{fmtDur(remaining)}</div>
-            )}
-          </div>
-        )}
-
         {!isActive && lastLog && (
-          <div className="history">
+          <History>
             Siste: {fmtRange(lastLog.start, lastLog.end)} (
             {fmtDurShort(lastLog.durMs)})
-          </div>
+          </History>
         )}
-      </div>
+      </MetaSection>
 
-      <div className="actions">
+      <ActionsSection>
         {!isActive && (
-          <div className="primary-actions">
-            <button onClick={onStart} className="primary btn-start">
+          <PrimaryActions>
+            <StartButton onClick={onStart} className="primary">
               Sovnet nå
-            </button>
-            <button
-              onClick={onManual}
-              className="btn-manual"
-              title="Manuell start"
-            >
+            </StartButton>
+            <ManualButton onClick={onManual} title="Manuell start">
               Manuell
-            </button>
-          </div>
+            </ManualButton>
+          </PrimaryActions>
         )}
         {isActive && (
-          <button
+          <StopButton
             onClick={onStop}
-            className={`btn-stop ${isOverdue ? "urgent" : "warning"}`}
+            className={isOverdue ? "urgent" : "warning"}
           >
-            {isOverdue ? "🛑 STOP" : "Stop"}
-          </button>
+            Våknet
+          </StopButton>
         )}
-      </div>
-    </ChildRowStyled>
+      </ActionsSection>
+    </ChildRowContainer>
   );
 }

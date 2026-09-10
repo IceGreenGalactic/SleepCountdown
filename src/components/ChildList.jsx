@@ -1,15 +1,5 @@
 import ChildRow from "./ChildRow";
-import styled from "styled-components";
-import { colors } from "../theme";
-
-const ListContainer = styled.div``;
-
-const EmptyState = styled.p`
-  color: ${colors.muted};
-  margin-top: 8px;
-  margin-bottom: 0;
-  font-size: 14px;
-`;
+import { ListContainer, EmptyState } from "./ChildList.styled";
 
 export default function ChildList({
   children,
@@ -29,22 +19,51 @@ export default function ChildList({
     );
   }
 
+  const hasSleptToday = (child) => {
+    const lastLog = child.logs?.[0];
+
+    if (!lastLog?.end) return false;
+
+    const logDate = new Date(lastLog.end);
+    const today = new Date();
+
+    return (
+      logDate.getFullYear() === today.getFullYear() &&
+      logDate.getMonth() === today.getMonth() &&
+      logDate.getDate() === today.getDate()
+    );
+  };
+
   const sorted = [...children].sort((a, b) => {
-    const aIsSleeping = Boolean(a.napStartTs && a.wakeAtTs);
-    const bIsSleeping = Boolean(b.napStartTs && b.wakeAtTs);
+    const aSleeping = Boolean(a.napStartTs && a.wakeAtTs);
+    const bSleeping = Boolean(b.napStartTs && b.wakeAtTs);
 
-    // Barn som ikke sover skal stå øverst
-    if (!aIsSleeping && bIsSleeping) return -1;
-    if (aIsSleeping && !bIsSleeping) return 1;
+    const aSleptToday = hasSleptToday(a);
+    const bSleptToday = hasSleptToday(b);
 
-    // Hvis begge sover:
-    // den som skal vekkes først står øverst
-    if (aIsSleeping && bIsSleeping) {
+    // 1. Barn som ikke har sovet ennå i dag
+    if (!aSleeping && !aSleptToday && (bSleeping || bSleptToday)) {
+      return -1;
+    }
+
+    if (!bSleeping && !bSleptToday && (aSleeping || aSleptToday)) {
+      return 1;
+    }
+
+    // 2. Barn som sover nå
+    if (aSleeping && !bSleeping) return -1;
+    if (bSleeping && !aSleeping) return 1;
+
+    // Begge sover: den som skal opp først øverst
+    if (aSleeping && bSleeping) {
       return a.wakeAtTs - b.wakeAtTs;
     }
 
-    // Hvis ingen av dem sover:
-    // sorter alfabetisk
+    // 3. Barn som allerede har sovet i dag
+    if (aSleptToday && !bSleptToday) return 1;
+    if (bSleptToday && !aSleptToday) return -1;
+
+    // Samme gruppe: alfabetisk
     return a.name.localeCompare(b.name, "no");
   });
 
