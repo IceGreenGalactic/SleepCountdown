@@ -1,23 +1,20 @@
 export const colors = {
-  // Base
-  bg: "#161719",
-  card: "#202226",
-  surface: "#292c31",
+  bg: "#18191d",
+  header: "#303442",
+  section: "#393c52",
+  card: "#30343f",
+  surface: "#393e4a",
+  
+  text: "#f4f4f4",
+  muted: "#aeb4c2",
 
-  // Text
-  text: "#f3f3f1",
-  muted: "#9fa2a8",
-
-  // Accent
   accent: "#a7a0d9",
   accentHover: "#bbb5e8",
-
   accentSoft: "rgba(167, 160, 217, 0.12)",
   accentSoftHover: "rgba(167, 160, 217, 0.18)",
   accentBorder: "rgba(167, 160, 217, 0.30)",
   accentBorderHover: "rgba(167, 160, 217, 0.50)",
 
-  // Neutral surfaces / borders
   border: "rgba(255, 255, 255, 0.10)",
   borderSoft: "rgba(255, 255, 255, 0.06)",
   borderStrong: "rgba(255, 255, 255, 0.15)",
@@ -26,7 +23,6 @@ export const colors = {
   surfaceSubtle: "rgba(255, 255, 255, 0.025)",
   surfaceHover: "rgba(255, 255, 255, 0.10)",
 
-  // Status: red
   danger: "#ef6461",
   dangerHover: "#e34f4b",
   dangerSoft: "rgba(239, 100, 97, 0.10)",
@@ -35,17 +31,17 @@ export const colors = {
   dangerPulse: "rgba(239, 100, 97, 0.30)",
   dangerPulseSoft: "rgba(239, 100, 97, 0.15)",
 
-  // Status: green
   ok: "#6fcf8d",
   okSoft: "rgba(111, 207, 141, 0.20)",
 
-  // Status: yellow
   warn: "#f0bd5e",
   warnSoft: "rgba(240, 189, 94, 0.08)",
   warnPulse: "rgba(240, 189, 94, 0.20)",
   warnPulseSoft: "rgba(240, 189, 94, 0.10)",
 
   overlay: "rgba(0, 0, 0, 0.55)",
+
+  onDanger: "#ffffff",
 };
 
 export const spacing = {

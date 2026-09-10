@@ -19,7 +19,7 @@ export const MainContent = styled.main`
 `;
 
 export const Card = styled.section`
-  background: ${colors.card};
+  background: ${colors.section};
   border: 1px solid ${colors.borderSoft};
   border-radius: 14px;
   padding: ${spacing.lg};

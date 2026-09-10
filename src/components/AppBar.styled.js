@@ -9,7 +9,7 @@ export default styled.header`
   align-items: center;
   justify-content: space-between;
   padding: ${spacing.md} ${spacing.lg};
-  background: ${colors.card};
+  background: ${colors.header};
   border-bottom: 1px solid ${colors.borderSoft};
   backdrop-filter: blur(6px);
 

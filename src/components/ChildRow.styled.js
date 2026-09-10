@@ -12,25 +12,28 @@ export const ChildRowContainer = styled.div`
   border-radius: 8px;
   margin-bottom: ${spacing.md};
   transition: all 0.25s ease;
-  background: ${colors.surfaceSubtle};
+  background: ${colors.card};
   position: relative;
 
   &.ready {
     border-color: ${colors.okSoft};
   }
 
-  &.due {
-    border: 2px solid ${colors.warn};
-    background: ${colors.warnSoft};
-    animation: duePulse 1.2s ease-in-out infinite;
-  }
+&.due {
+  border: 2px solid ${colors.warn};
+  background:
+    linear-gradient(${colors.warnSoft}, ${colors.warnSoft}),
+    ${colors.card};
+  animation: duePulse 1.2s ease-in-out infinite;
+}
 
-  &.overdue {
-    border: 2px solid ${colors.danger};
-    background: ${colors.dangerSoft};
-    animation: overduePulse 1s ease-in-out infinite;
-  }
-
+&.overdue {
+  border: 2px solid ${colors.danger};
+  background:
+    linear-gradient(${colors.dangerSoft}, ${colors.dangerSoft}),
+    ${colors.card};
+  animation: overduePulse 1s ease-in-out infinite;
+}
   @keyframes duePulse {
     0%,
     100% {
