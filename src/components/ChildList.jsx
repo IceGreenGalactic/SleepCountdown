@@ -1,6 +1,6 @@
-import ChildRow from './ChildRow';
-import styled from 'styled-components';
-import { colors } from '../theme';
+import ChildRow from "./ChildRow";
+import styled from "styled-components";
+import { colors } from "../theme";
 
 const ListContainer = styled.div``;
 
@@ -29,9 +29,24 @@ export default function ChildList({
     );
   }
 
-  const sorted = [...children].sort((a, b) =>
-    a.name.localeCompare(b.name, 'no')
-  );
+  const sorted = [...children].sort((a, b) => {
+    const aIsSleeping = Boolean(a.napStartTs && a.wakeAtTs);
+    const bIsSleeping = Boolean(b.napStartTs && b.wakeAtTs);
+
+    // Barn som ikke sover skal stå øverst
+    if (!aIsSleeping && bIsSleeping) return -1;
+    if (aIsSleeping && !bIsSleeping) return 1;
+
+    // Hvis begge sover:
+    // den som skal vekkes først står øverst
+    if (aIsSleeping && bIsSleeping) {
+      return a.wakeAtTs - b.wakeAtTs;
+    }
+
+    // Hvis ingen av dem sover:
+    // sorter alfabetisk
+    return a.name.localeCompare(b.name, "no");
+  });
 
   return (
     <ListContainer>

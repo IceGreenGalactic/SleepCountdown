@@ -17,7 +17,12 @@ export default function ChildRow({
 
   // Update countdown timer every second
   useEffect(() => {
-    if (!child.wakeAtTs) return;
+    if (!child.wakeAtTs) {
+      setRemaining(null);
+      setIsOverdue(false);
+      setIsDue(false);
+      return;
+    }
 
     const updateCountdown = () => {
       const now = Date.now();
@@ -124,7 +129,7 @@ export default function ChildRow({
         {!isActive && (
           <div className="primary-actions">
             <button onClick={onStart} className="primary btn-start">
-              Start Nap
+              Sovnet nå
             </button>
             <button
               onClick={onManual}
